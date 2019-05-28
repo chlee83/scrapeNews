@@ -1,0 +1,78 @@
+<!--navbar-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark py-3">
+    <a class="navbar-brand" href="#">Mongo Scraper</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+        <a class="nav-item nav-link active" href="/">Home</a>
+        <a class="nav-item nav-link" href="/saved">Saved Articles</a>
+        <button class="btn btn-primary mr-2 btnScrape">Scrape New Articles</button>
+        <button class="btn btn-danger btnClear">Clear Articles</button>
+        </div>
+    </div>
+</nav>
+
+<!--jumbotron-->
+<div class="container-fluid">
+    <div class="row jumbotron" style="height: 450px; background-image: url('https://images.unsplash.com/photo-1495020689067-958852a7765e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1050&q=80'); background-position: center; background-repeat: no-repeat; background-size: cover;">
+        <div class="col-12 text-center mt-5" style="color: #1272b3;">
+            <p class="display-1">Mongo Scraper</p>
+            <p class="display-4">New York Times Edition</p>
+        </div>
+    </div>
+
+<!--articles-->
+    <div class="row">
+        <div class="col-12">
+            {{#each items}}
+                <div class="card text-white mb-3" style="background-color: #1272b3;">
+                    <div class="card-header">
+                        <div class="row">
+                        <div class="col-9">
+                            <h5 class="card-title"><a class="text-white" href="https://www.nytimes.com/{{link}}" target="_blank">{{title}}</a></h5>
+                        </div>
+                        <div class="col-3 text-right">
+                            <button class="btn btn-outline-light" id="saveArticle" data-id={{_id}}>Save Article</button>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="card-body bg-white text-dark">
+                        <p class="card-text">{{bodyText}}</p>
+                    </div>
+                </div>
+            {{/each}}
+
+        </div>
+    </div>
+</div>
+
+<!--footer-->
+<footer class="footer mt-auto py-3 bg-secondary">
+    <div class="container text-center">
+        <span class="text-light">New York Times Scraper</span>
+    </div>
+</footer>
+<!--javascript-->
+<script>
+
+//button listener for save article button
+$(document).on("click", "#saveArticle", function() {
+
+    //save id from atricle
+    var thisId = $(this).attr("data-id");
+
+    // Run POST request to save the article
+    $.ajax({
+        method: "POST",
+        url: "/saved"
+    }).then(function(data) {
+        console.log(data);
+
+        $("#notes")
+    })
+
+})
+
+</script>
