@@ -8,7 +8,7 @@
         <div class="navbar-nav">
         <a class="nav-item nav-link active" href="/">Home</a>
         <a class="nav-item nav-link" href="/saved">Saved Articles</a>
-        <button class="btn btn-primary mr-2 btnScrape">Scrape New Articles</button>
+        <button class="btn btn-primary mr-2" id="scrape-btn">Scrape New Articles</button>
         <button class="btn btn-danger btnClear">Clear Articles</button>
         </div>
     </div>
@@ -27,6 +27,8 @@
     <div class="row">
         <div class="col-12">
             {{#each items}}
+                {{#if saved}}
+                {{else}}
                 <div class="card text-white mb-3" style="background-color: #1272b3;">
                     <div class="card-header">
                         <div class="row">
@@ -42,6 +44,7 @@
                         <p class="card-text">{{bodyText}}</p>
                     </div>
                 </div>
+                {{/if}}
             {{/each}}
 
         </div>
@@ -54,8 +57,24 @@
         <span class="text-light">New York Times Scraper</span>
     </div>
 </footer>
+
+
 <!--javascript-->
 <script>
+
+//button listener for scraping articles button
+$(document).on("click", "#scrape-btn", function() {
+
+    // Run Get request to save the articles
+    $.ajax({
+        method: "GET",
+        url: "/scrape"
+    }).then(function(data) {
+        console.log(data);
+        location.reload();
+    });
+});
+
 
 //button listener for save article button
 $(document).on("click", "#saveArticle", function() {
@@ -63,16 +82,15 @@ $(document).on("click", "#saveArticle", function() {
     //save id from atricle
     var thisId = $(this).attr("data-id");
 
-    // Run POST request to save the article
+console.log(thisId);
+    // Run Get request to save the article
     $.ajax({
-        method: "POST",
-        url: "/saved"
+        method: "GET",
+        url: "/save/" + thisId
     }).then(function(data) {
         console.log(data);
-
-        $("#notes")
-    })
-
-})
+        location.reload();
+    });
+});
 
 </script>

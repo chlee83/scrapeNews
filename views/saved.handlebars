@@ -27,6 +27,7 @@
     <div class="row">
         <div class="col-12">
             {{#each items}}
+                {{#if saved}}
                 <div class="card text-white mb-3" style="background-color: #1272b3;">
                     <div class="card-header">
                         <div class="row">
@@ -35,7 +36,7 @@
                         </div>
                         <div class="col-3 text-right">
                             <button class="btn btn-danger" id="deleteArticle" data-id={{_id}}>Delete Article</button>
-                            <button class="btn btn-light" id="notes" data-id={{_id}}>Notes</button>
+                            <button class="btn btn-light" data-toggle="modal" data-target="#exampleModal" id="notes" data-id={{_id}} data-title='{{title}}'>Notes</button>
                         </div>
                         </div>
                     </div>
@@ -43,12 +44,95 @@
                         <p class="card-text">{{bodyText}}</p>
                     </div>
                 </div>
+                {{else}}
+                {{/if}}
             {{/each}}
 
         </div>
     </div>
+   
 </div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!--location for new notes-->
+        <div id="notes-container"></div>
+        <form id="notes-form">
+            <textarea id="note-text" style="width: 100%;"></textarea>
+            <button class="btn btn-info" type= "submit">Add Note</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <script>
+
+
+//button listener for save article button
+$(document).on("click", "#deleteArticle", function() {
+
+    //save id from article
+    var thisId = $(this).attr("data-id");
+
+console.log(thisId);
+    // Run POST request to save the article
+    $.ajax({
+        method: "GET",
+        url: "/remove-save/" + thisId
+    }).then(function(data) {
+        console.log(data);
+        location.reload();
+    });
+});
+
+
+//button listener for Notes button
+$(document).on("click", "#notes", function() {
+
+    //empty notes container
+    $(".notes-container").empty();
+
+    //TODO!!
+    //make request to get all notes for this article then prepend to notes container
+
+    var thisId = $(this).attr("data-id");
+    var title = $(this).attr("data-title").trim();
+    console.log(thisId);    
+    console.log(title);
+
+    $(".modal-title").html(title);
+});
+
+//submit button to add notes in modal
+$("#notes-form").on("submit", function(event) {
+event.preventDefault();
+
+    var newP = $("<p>");
+    var notesText = newP.append($("#note-text").val().trim());
+    
+
+    //TODO!!
+    //make request to data to add the note
+    //put notes text and delete button on each note
+
+    //append new notes
+    $("#notes-container").append(notesText);
+   
+})
+
 
 </script>
 

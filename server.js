@@ -39,6 +39,7 @@ app.get("/scrape", function(req,res) {
     // with cheerio, find each div with class "css-1qiat4j" and loop through the results
     $("div.css-1qiat4j").each(function(i, element) {
 
+      //save results into new object
       var result = {};
 
       // save the text of the h2 tag as "title"
@@ -60,11 +61,6 @@ app.get("/scrape", function(req,res) {
           .catch(function(err) {
             console.log(err);
           });
-        // db.Article.create({
-        //   title: title,
-        //   link: link,
-        //   bodyText: bodyText,
-        // });
       }
     });
 
@@ -82,17 +78,25 @@ app.get("/", function(req, res) {
 });
 
 //Route for saving an article
-app.post("/articles/:id", function(req,res) {
-  db.Note.create(req.body)
-    .then(function(dbNote) {
-      return db.Article.findOneAndUpdate({ _id: req.params.id }, { note: dbNote._id }, {new: true});
-    })
+app.get("/save/:id", function(req,res) {
+  db.Article.findOneAndUpdate({ _id: req.params.id }, { saved: true })
     .then(function(dbArticle) {
       res.json(dbArticle);
     })
     .catch(function(err) {
       res.json(err);
+    });
+});
+
+//Route for remove an article
+app.get("/remove-save/:id", function(req,res) {
+  db.Article.findOneAndUpdate({ _id: req.params.id }, { saved: false })
+    .then(function(dbArticle) {
+      res.json(dbArticle);
     })
+    .catch(function(err) {
+      res.json(err);
+    });
 });
 
 //Route for saved articles
@@ -102,6 +106,9 @@ app.get("/saved", function(req,res) {
       res.render("saved", {items:dbArticle});
     });
 });
+
+
+
 
 /************** */
 
