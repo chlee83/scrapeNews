@@ -9,7 +9,7 @@
         <a class="nav-item nav-link active" href="/">Home</a>
         <a class="nav-item nav-link" href="/saved">Saved Articles</a>
         <button class="btn btn-primary mr-2" id="scrape-btn">Scrape New Articles</button>
-        <button class="btn btn-danger btnClear">Clear Articles</button>
+        <button class="btn btn-danger" id="clear-btn">Clear Articles</button>
         </div>
     </div>
 </nav>
@@ -52,11 +52,11 @@
 </div>
 
 <!--footer-->
-<footer class="footer mt-auto py-3 bg-secondary" style="margin-top: 100%;">
+{{!-- <footer class="footer mt-auto py-3 bg-secondary" style="margin-top: 100%;">
     <div class="container text-center">
         <span class="text-light">New York Times Scraper</span>
     </div>
-</footer>
+</footer> --}}
 
 
 <!--javascript-->
@@ -73,6 +73,18 @@ $(document).on("click", "#scrape-btn", function() {
         console.log(data);
         location.reload();
     });
+});
+
+
+//button listener for clear articles button
+$(document).on("click", "#clear-btn", function() {
+
+    // Run Get request to delete all articles
+    $.ajax({
+        method: "DELETE",
+        url: "/clear-all"
+    });
+    location.reload();
 });
 
 

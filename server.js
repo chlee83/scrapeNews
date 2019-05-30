@@ -99,6 +99,55 @@ app.get("/remove-save/:id", function(req,res) {
     });
 });
 
+//Route to remove one articles from saved
+app.delete("/remove-save/:id", function(req,res) {
+  db.Article.findByIdAndDelete({ _id: req.params.id }, { saved: true },
+    function(err) {
+      if (err) {
+        console.log(err);
+      }
+  });
+    // .then(function(dbArticle) {
+    //   res.json(dbArticle);
+    // })
+    // .catch(function(err) {
+    //   res.json(err);
+    // });
+});
+
+//Route for clear all articles from main
+app.delete("/clear-all", function(req,res) {
+  db.Article.deleteMany({ saved: false },
+    function(err) {
+      if (err) {
+        console.log(err);
+      }
+  });
+    // .then(function(dbArticle) {
+    //   res.json(dbArticle);
+    // })
+    // .catch(function(err) {
+    //   res.json(err);
+    // });
+});
+
+//Route for clear all articles from saved
+app.delete("/clear-saved", function(req,res) {
+  db.Article.deleteMany({ saved: true },
+  function(err) {
+    if (err) {
+      console.log(err);
+    }
+  });
+    // .then(function(dbArticle) {
+    //   res.json(dbArticle);
+    // })
+    // .catch(function(err) {
+    //   res.json(err);
+    // });
+});
+
+
 //Route for saved articles
 app.get("/saved", function(req,res) {
   db.Article.find({})

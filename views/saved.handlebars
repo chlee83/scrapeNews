@@ -8,7 +8,7 @@
         <div class="navbar-nav">
         <a class="nav-item nav-link" href="/">Home</a>
         <a class="nav-item nav-link active" href="">Saved Articles</a>
-        <button class="btn btn-danger btnClear">Clear Articles</button>
+        <button class="btn btn-danger" id="clear-saved-btn">Clear Articles</button>
         </div>
     </div>
 </nav>
@@ -81,23 +81,19 @@
 <script>
 
 
-//button listener for save article button
+//button listener for clear articles button
 $(document).on("click", "#deleteArticle", function() {
 
     //save id from article
     var thisId = $(this).attr("data-id");
 
-console.log(thisId);
-    // Run POST request to save the article
+    // Run Get request to delete all articles
     $.ajax({
-        method: "GET",
+        method: "DELETE",
         url: "/remove-save/" + thisId
-    }).then(function(data) {
-        console.log(data);
-        location.reload();
     });
+      location.reload();
 });
-
 
 //button listener for Notes button
 $(document).on("click", "#notes", function() {
@@ -115,6 +111,18 @@ $(document).on("click", "#notes", function() {
 
     $(".modal-title").html(title);
 });
+
+//button listener for clear articles button
+$(document).on("click", "#clear-saved-btn", function() {
+
+    // Run Get request to delete all articles
+    $.ajax({
+        method: "DELETE",
+        url: "/clear-saved"
+    });
+      location.reload();
+});
+
 
 //submit button to add notes in modal
 $("#notes-form").on("submit", function(event) {
