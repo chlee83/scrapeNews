@@ -42,16 +42,16 @@
                     </div>
                     <div class="card-body bg-white text-dark">
                         <div class="row px-3">
-                        {{#if image}}
-                        <div class="col-6 pl-0">
-                            <img src={{image}} style="width: 100%;"/>
-                        </div>
-                        <div class="col-6">
-                            <span class="card-text">{{bodyText}}</span>
-                        </div>
-                        {{else}}
-                        <p class="card-text">{{bodyText}}</p>
-                        {{/if}}
+                            {{#if image}}
+                            <div class="col-4 pl-0">
+                                <img class="border border-secondary rounded" src={{image}} style="width: 100%;"/>
+                            </div>
+                            <div class="col-8">
+                                <span class="card-text">{{bodyText}}</span>
+                            </div>
+                            {{else}}
+                            <p class="card-text">{{bodyText}}</p>
+                            {{/if}}
                         </div>
                     </div>
                 </div>
