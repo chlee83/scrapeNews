@@ -51,6 +51,9 @@ app.get("/scrape", function(req,res) {
       // save body text as "bodyText"
       result.bodyText = $(element).find("li").text();
 
+      // save image
+      result.image = $(element).find("a").find("img").attr("src");
+
       //if the article has a title, link, and body: make an object with data we scraped and push into array
       if(result.title && result.link && result.bodyText) {
 

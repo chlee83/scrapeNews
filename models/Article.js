@@ -17,8 +17,12 @@ var ArticleSchema = new Schema({
     required: true
   },
   bodyText: {
-      type: String,
-      required: true
+    type: String,
+    required: true
+  },
+  image: {
+    data: Buffer,
+    type: String
   },
   saved: {
     type: Boolean,
