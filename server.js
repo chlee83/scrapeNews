@@ -36,6 +36,14 @@ app.get("/scrape", function(req,res) {
     // load body of the HTML into cheerio
     var $ = cheerio.load(response.data);
 
+    //remove previous data and update with new ones
+    db.Article.remove({},
+      function(err) {
+        if (err) {
+          console.log(err);
+        }
+    });
+
     // with cheerio, find each div with class "css-1qiat4j" and loop through the results
     $("div.css-1qiat4j").each(function(i, element) {
 
@@ -91,17 +99,6 @@ app.get("/save/:id", function(req,res) {
     });
 });
 
-//Route for remove an article
-app.get("/remove-save/:id", function(req,res) {
-  db.Article.findOneAndUpdate({ _id: req.params.id }, { saved: false })
-    .then(function(dbArticle) {
-      res.json(dbArticle);
-    })
-    .catch(function(err) {
-      res.json(err);
-    });
-});
-
 //Route to remove one articles from saved
 app.delete("/remove-save/:id", function(req,res) {
   db.Article.findByIdAndDelete({ _id: req.params.id }, { saved: true },
@@ -110,12 +107,6 @@ app.delete("/remove-save/:id", function(req,res) {
         console.log(err);
       }
   });
-    // .then(function(dbArticle) {
-    //   res.json(dbArticle);
-    // })
-    // .catch(function(err) {
-    //   res.json(err);
-    // });
 });
 
 //Route for clear all articles from main
@@ -126,12 +117,6 @@ app.delete("/clear-all", function(req,res) {
         console.log(err);
       }
   });
-    // .then(function(dbArticle) {
-    //   res.json(dbArticle);
-    // })
-    // .catch(function(err) {
-    //   res.json(err);
-    // });
 });
 
 //Route for clear all articles from saved
@@ -142,12 +127,6 @@ app.delete("/clear-saved", function(req,res) {
       console.log(err);
     }
   });
-    // .then(function(dbArticle) {
-    //   res.json(dbArticle);
-    // })
-    // .catch(function(err) {
-    //   res.json(err);
-    // });
 });
 
 
@@ -158,8 +137,6 @@ app.get("/saved", function(req,res) {
       res.render("saved", {items:dbArticle});
     });
 });
-
-
 
 
 /************** */
